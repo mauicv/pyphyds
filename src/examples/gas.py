@@ -1,6 +1,6 @@
-from pyphydl.laws import BoxBoundaryLaw
-from pyphydl.particles import Particles
-from pyphydl.simulation import Simulation
+from pyphyds.laws import BoxBoundaryLaw
+from pyphyds.particles import Particles
+from pyphyds.simulation import Simulation
 import torch
 # Example file showing a basic pygame "game loop"
 import pygame

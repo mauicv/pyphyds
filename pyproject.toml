@@ -3,7 +3,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pyphydl"
+name = "pyphyds"
 authors = [
     {name = "Alex Athorne", email = "alexander.athorne@gmail.com"},
 ]

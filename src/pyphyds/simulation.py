@@ -1,7 +1,7 @@
 from typing import List
-from pyphydl.particles import Particles
-from pyphydl.laws import UniversalLaw
-from pyphydl.interactions import InteractionLaw
+from pyphyds.particles import Particles
+from pyphyds.laws import UniversalLaw
+from pyphyds.interactions import InteractionLaw
 
 
 class Simulation:

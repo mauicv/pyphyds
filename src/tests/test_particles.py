@@ -1,4 +1,4 @@
-from pyphydl.particles import Particles
+from pyphyds.particles import Particles
 
 def test_particles():
     p = Particles(10, 1, 1)
