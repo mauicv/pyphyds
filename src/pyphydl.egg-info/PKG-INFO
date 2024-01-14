@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: pyphydl
+Version: 0.0.0
+Summary: Library for physics simulation dataset generation
+Author-email: Alex Athorne <alexander.athorne@gmail.com>
+License: BSD-3-Clause
+Keywords: simulation
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: torch
+Requires-Dist: importlib-metadata; python_version < "3.8"
+Requires-Dist: pyyaml
+Requires-Dist: numpy
+
+## PyPhyDL
+
+PyPhyDL is a Python package for creating datasets derived from physics simulations. The aim is to enable users to easily create datasets with increasing complexity in order to test how machine learning models perform w.r.t. the complexity of the dataset.
+
+## Installation
+
+```bash
+pip install pyphydl
+```
