@@ -1,4 +1,4 @@
-from pyphyds.laws import BoxBoundaryLaw
+from pyphyds.laws.box_boundary import BoxBoundaryLaw
 from pyphyds.particles import Particles
 from pyphyds.simulation import Simulation
 import torch
@@ -13,7 +13,7 @@ clock = pygame.time.Clock()
 running = True
 
 # simulation setup
-particles = Particles(100)
+particles = Particles(1)
 boundary_law = BoxBoundaryLaw(
     particles, 'box', 0, screen.get_width(), 0, screen.get_height(),
 )

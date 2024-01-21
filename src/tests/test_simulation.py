@@ -1,6 +1,6 @@
 from pyphyds.simulation import Simulation
 from pyphyds.particles import Particles
-from pyphyds.laws import BoxBoundaryLaw
+from pyphyds.laws.box_boundary import BoxBoundaryLaw
 
 
 def test_simulation():

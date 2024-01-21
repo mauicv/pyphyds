@@ -1,6 +1,6 @@
 from typing import List
 from pyphyds.particles import Particles
-from pyphyds.laws import UniversalLaw
+from pyphyds.laws.base import UniversalLaw
 from pyphyds.interactions import InteractionLaw
 
 

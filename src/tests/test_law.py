@@ -1,8 +1,7 @@
 import torch
 import pytest
-from pyphyds.simulation import Simulation
 from pyphyds.particles import Particles
-from pyphyds.laws import BoxBoundaryLaw
+from pyphyds.laws.box_boundary import BoxBoundaryLaw
 
 
 @pytest.mark.parametrize('p,t', [
@@ -20,6 +19,7 @@ from pyphyds.laws import BoxBoundaryLaw
 def test_box_boundary_law(p, t):
     particles = Particles(1)
     particles.x = torch.tensor(p)
+    particles.old_x = torch.tensor(p)
     boundary_law = BoxBoundaryLaw(particles, 'box', -1.0, 1.0, -1.0, 1.0)
     boundary_law.step(1)
     assert torch.allclose(particles.x, torch.tensor(t), atol=1e-5)
