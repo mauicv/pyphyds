@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Optional
 import torch
 
 
@@ -6,12 +6,14 @@ class Particles:
     def __init__(
             self,
             num: int,
-            properties: Dict=None,
+            properties: Optional[Dict]=None,
             id: str='none'
         ):
         self.x = torch.randn(num, 2)
-        self.old_x = torch.randn(num, 2)
+        self.old_x = self.x + torch.randn(num, 2) * 0.0001
         self.properties = properties
+        if properties is None:
+            self.properties = {}
         self.num = num
         self.id = id
 

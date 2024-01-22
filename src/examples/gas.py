@@ -1,4 +1,5 @@
 from pyphyds.laws.box_boundary import BoxBoundaryLaw
+from pyphyds.interactions.collision_law import CollisionLaw
 from pyphyds.particles import Particles
 from pyphyds.simulation import Simulation
 import torch
@@ -13,14 +14,15 @@ clock = pygame.time.Clock()
 running = True
 
 # simulation setup
-particles = Particles(1)
+particles = Particles(100, properties={'size': 5})
 boundary_law = BoxBoundaryLaw(
-    particles, 'box', 0, screen.get_width(), 0, screen.get_height(),
+    particles, 0, screen.get_width(), 0, screen.get_height(),
 )
+collision_law = CollisionLaw([particles, particles])
 sim = Simulation(
     particles=[particles],
     laws=[boundary_law],
-    interactions=[]
+    interactions=[collision_law]
 )
 
 def draw_particles(particles):
@@ -40,7 +42,7 @@ while running:
     screen.fill("white")
 
     # run simulation
-    sim.step(2)
+    sim.step(0.1)
     draw_particles(particles)
 
     # flip() the display to put your work on screen

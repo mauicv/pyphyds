@@ -1,7 +1,7 @@
 from typing import List
 from pyphyds.particles import Particles
 from pyphyds.laws.base import UniversalLaw
-from pyphyds.interactions import InteractionLaw
+from pyphyds.interactions.base import InteractionLaw
 
 
 class Simulation:
@@ -20,7 +20,7 @@ class Simulation:
             particle.dx(dt)
 
         for law in self.laws:
-            law.step(dt)
+            law.step()
 
         for interaction in self.interactions:
-            interaction.step(dt)
+            interaction.step()

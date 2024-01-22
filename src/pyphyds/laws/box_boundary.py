@@ -7,20 +7,19 @@ from pyphyds.laws.base import UniversalLaw
 class BoxBoundaryLaw(UniversalLaw):
     def __init__(self,
             particles: Particles,
-            name: str,
             x_min: float,
             x_max: float,
             y_min: float,
             y_max: float
         ):
-        super().__init__(particles, name)
+        super().__init__(particles, "BoxBoundary")
         self.x_min = x_min
         self.x_max = x_max
         self.y_min = y_min
         self.y_max = y_max
         self.bounds = (self.x_min, self.x_max, self.y_min, self.y_max)
 
-    def step(self, dt: float):
+    def step(self):
         # X-axis
         is_oob = self.particles.x[:, 0] < self.x_min
         if is_oob.any():

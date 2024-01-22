@@ -11,5 +11,5 @@ class UniversalLaw:
         self.name = name
         self.particles = particles
 
-    def step(self, dt: float):
+    def step(self):
         raise NotImplementedError()
