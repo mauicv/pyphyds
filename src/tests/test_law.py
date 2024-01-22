@@ -21,7 +21,7 @@ def test_box_boundary_law(p, t):
     particles.x = torch.tensor(p)
     particles.old_x = torch.tensor(p)
     boundary_law = BoxBoundaryLaw(particles, -1.0, 1.0, -1.0, 1.0)
-    boundary_law.step(1)
+    boundary_law.step()
     assert torch.allclose(particles.x, torch.tensor(t), atol=1e-5)
 
 def test_box_boundary_law_random_particles():
@@ -31,7 +31,7 @@ def test_box_boundary_law_random_particles():
     assert (particles.x[:, 1] > 1).sum() > 0
     assert (particles.x[:, 1] < -1).sum() > 0
     boundary_law = BoxBoundaryLaw(particles, -1.0, 1.0, -1.0, 1.0)
-    boundary_law.step(1)
+    boundary_law.step()
     assert (particles.x[:, 0] > 1).sum() == 0
     assert (particles.x[:, 0] < -1).sum() == 0
     assert (particles.x[:, 1] > 1).sum() == 0
