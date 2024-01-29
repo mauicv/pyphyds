@@ -1,10 +1,11 @@
+
 from typing import List
-from pyphyds.particles import Particles
+from pyphyds.physics.particles import Particles
 from pyphyds.laws.base import UniversalLaw
 from pyphyds.interactions.base import InteractionLaw
 
 
-class Simulation:
+class PhysicsSimulation:
     def __init__(
             self,
             particles: List[Particles],
@@ -24,3 +25,12 @@ class Simulation:
 
         for interaction in self.interactions:
             interaction.step()
+
+
+class CellularSimulation:
+    def __init__(
+            self,
+            grid_width: int,
+            grid_height: int,
+        ):
+        pass

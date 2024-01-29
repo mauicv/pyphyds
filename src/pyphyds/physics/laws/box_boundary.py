@@ -1,7 +1,7 @@
 import torch
 from typing import List
-from pyphyds.particles import Particles
-from pyphyds.laws.base import UniversalLaw
+from pyphyds.physics.particles import Particles
+from pyphyds.physics.laws.base import UniversalLaw
 
 
 class BoxBoundaryLaw(UniversalLaw):

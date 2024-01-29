@@ -1,6 +1,6 @@
 from typing import List
-from pyphyds.particles import Particles
-from pyphyds.interactions.base import InteractionLaw
+from pyphyds.physics.particles import Particles
+from pyphyds.physics.interactions.base import InteractionLaw
 import torch
 
 

@@ -1,7 +1,7 @@
-from pyphyds.laws.box_boundary import BoxBoundaryLaw
-from pyphyds.interactions.collision_law import CollisionLaw
-from pyphyds.particles import Particles
-from pyphyds.simulation import Simulation
+from pyphyds.physics.laws.box_boundary import BoxBoundaryLaw
+from pyphyds.physics.interactions.collision_law import CollisionLaw
+from pyphyds.physics.particles import Particles
+from pyphyds.physics import PhysicsSimulation
 import torch
 # Example file showing a basic pygame "game loop"
 import pygame
@@ -19,7 +19,7 @@ boundary_law = BoxBoundaryLaw(
     particles, 0, screen.get_width(), 0, screen.get_height(),
 )
 collision_law = CollisionLaw([particles, particles])
-sim = Simulation(
+sim = PhysicsSimulation(
     particles=[particles],
     laws=[boundary_law],
     interactions=[collision_law]

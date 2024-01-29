@@ -1,5 +1,5 @@
-from pyphyds.particles import Particles
-from pyphyds.interactions.collision_law import CollisionLaw
+from pyphyds.physics.particles import Particles
+from pyphyds.physics.interactions.collision_law import CollisionLaw
 
 
 def test_collision_law_random_particles():

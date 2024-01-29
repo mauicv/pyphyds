@@ -1,5 +1,5 @@
 from typing import List
-from pyphyds.particles import Particles
+from pyphyds.physics.particles import Particles
 import torch
 
 

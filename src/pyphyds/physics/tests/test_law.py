@@ -1,7 +1,7 @@
 import torch
 import pytest
-from pyphyds.particles import Particles
-from pyphyds.laws.box_boundary import BoxBoundaryLaw
+from pyphyds.physics.particles import Particles
+from pyphyds.physics.laws.box_boundary import BoxBoundaryLaw
 
 
 @pytest.mark.parametrize('p,t', [
