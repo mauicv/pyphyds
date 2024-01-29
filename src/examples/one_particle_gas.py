@@ -14,7 +14,9 @@ clock = pygame.time.Clock()
 running = True
 
 # simulation setup
-particles = Particles(100, properties={'size': 5})
+particles = Particles(3, properties={'size': 5})
+particles.x = torch.randn((100, 2)) * torch.tensor([1280, 720])
+particles.old_x = particles.x + 5 * torch.randn((100, 2))
 boundary_law = BoxBoundaryLaw(
     particles, 0, screen.get_width(), 0, screen.get_height(),
 )

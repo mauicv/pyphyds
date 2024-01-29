@@ -25,8 +25,13 @@ class Particles:
         self.old_x += dv * dt
         self.x += dv * dt
 
+    @property
     def v(self):
         return self.x - self.old_x
+
+    @property
+    def s(self):
+        return torch.linalg.norm(self.v, dim=-1)
 
     def __repr__(self):
         return f"Particles(x.shape={self.x.shape}, num={self.num})"

@@ -14,21 +14,35 @@ clock = pygame.time.Clock()
 running = True
 
 # simulation setup
-particles_1 = Particles(4, properties={'size': 25, 'color': "black"})
-particles_2 = Particles(100, properties={'size': 5, 'color': "red"})
+num_particles_1 = 5
+particles_1 = Particles(num_particles_1, properties={'size': 25, 'color': "black"})
+particles_1.x = torch.randn((num_particles_1, 2)) * torch.tensor([1280, 720])
+particles_1.old_x = particles_1.x + 10 * torch.randn((num_particles_1, 2))
+
+num_particles_2 = 6
+particles_2 = Particles(num_particles_2, properties={'size': 25, 'color': "red"})
+particles_2.x = torch.randn((num_particles_2, 2)) * torch.tensor([1280, 720])
+particles_2.old_x = particles_2.x + 10 * torch.randn((num_particles_2, 2))
+
 boundary_law_1 = BoxBoundaryLaw(
     particles_1, 0, screen.get_width(), 0, screen.get_height(),
 )
 boundary_law_2 = BoxBoundaryLaw(
     particles_2, 0, screen.get_width(), 0, screen.get_height(),
 )
+
 collision_law_11 = CollisionLaw([particles_1, particles_1])
 collision_law_12 = CollisionLaw([particles_1, particles_2])
 collision_law_22 = CollisionLaw([particles_2, particles_2])
+
 sim = Simulation(
     particles=[particles_1, particles_2],
     laws=[boundary_law_1, boundary_law_2],
-    interactions=[collision_law_11, collision_law_12, collision_law_22]
+    interactions=[
+        collision_law_11,
+        collision_law_12,
+        collision_law_22
+    ]
 )
 
 def draw_particles(particles):
