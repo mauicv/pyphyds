@@ -1,36 +1,25 @@
-
+import torch
 from typing import List
-from pyphyds.physics.particles import Particles
-from pyphyds.laws.base import UniversalLaw
-from pyphyds.interactions.base import InteractionLaw
 
-
-class PhysicsSimulation:
-    def __init__(
-            self,
-            particles: List[Particles],
-            laws: List[UniversalLaw],
-            interactions: List[InteractionLaw]
-        ):
-        self.particles = particles
-        self.laws = laws
-        self.interactions = interactions
-    
-    def step(self, dt):
-        for particle in self.particles:
-            particle.dx(dt)
-
-        for law in self.laws:
-            law.step()
-
-        for interaction in self.interactions:
-            interaction.step()
+from pyphyds.cellular.interactions.base_interaction import InteractionRuleBase
 
 
 class CellularSimulation:
     def __init__(
             self,
-            grid_width: int,
-            grid_height: int,
+            width: int,
+            height: int,
+            num_states: int = 1,
+            num_histories: int = 1,
+            interaction_rules: List[InteractionRuleBase] = None
         ):
-        pass
+        self.num_states = num_states
+        self.num_histories = num_histories
+        self.width = width
+        self.height = height
+        self.states = torch.randint(0, num_states, (num_histories, width, height))
+        self.interaction_rules = interaction_rules
+
+    def step(self):
+        for rule in self.interaction_rules:
+            self.states = rule(self.states)
