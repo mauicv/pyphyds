@@ -12,8 +12,8 @@ SIZE = 50
 BOUNDS = np.array((SIZE, SIZE))
 NUM_PARTICLES = 50
 
-particles_a = Particles(NUM_PARTICLES, BOUNDS, 2)
-particles_b = Particles(NUM_PARTICLES, BOUNDS, 2)
+particles_a = Particles(NUM_PARTICLES, BOUNDS, 1, attributes={"color": (255, 0, 0)})
+particles_b = Particles(NUM_PARTICLES, BOUNDS, 1, attributes={"color": (0, 0, 255)})
 
 simulation = Simulation(
     particles=[particles_a, particles_b],
@@ -21,24 +21,16 @@ simulation = Simulation(
     interactions=[CollisionInteraction(particles_a, particles_b)]
 )
 
-
 def draw(particles):
     img = np.zeros((*BOUNDS, 3), dtype=np.uint8)
-
-    for particle, color in particles:
+    for particle in particles:
         p = np.clip(particle.x, np.array([0, 0]), BOUNDS - 1)
-        img[p[:, 0], p[:, 1]] = color
+        img[p[:, 0], p[:, 1]] = particle.attributes["color"]
     img = cv2.resize(img, (500, 500), interpolation=cv2.INTER_NEAREST)
     return img
 
-
-for i in range(100):
-    img = draw(
-        particles=[
-            (particles_a, (255, 0, 0)),
-            (particles_b, (0, 0, 255))
-        ]
-    )
+while True:
+    img = draw([particles_a, particles_b])
     cv2.imshow("game", img)
     cv2.waitKey(100)
     simulation.step()

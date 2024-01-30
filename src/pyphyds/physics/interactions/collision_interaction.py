@@ -4,7 +4,7 @@ import numpy as np
 
 class CollisionInteraction(InteractionRuleBase):
     def __init__(self, particles_a, particles_b):
-        super().__init__("CollisionInteraction")
+        super().__init__("collision-interaction")
         self.particles_a = particles_a
         self.particles_b = particles_b
         assert self.particles_a != self.particles_b
@@ -21,7 +21,7 @@ class CollisionInteraction(InteractionRuleBase):
 
 class SelfCollisionInteraction(InteractionRuleBase):
     def __init__(self, particles):
-        super().__init__("SelfCollisionInteraction")
+        super().__init__("self-collision-interaction")
         self.particles = particles
 
     def __call__(self):
