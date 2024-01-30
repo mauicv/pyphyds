@@ -1,8 +1,8 @@
-from pyphyds.physics.particles import Particles
+from pyphyds.physics.particles import Particles, ParticleMap
 from pyphyds.physics.laws.boundary_box import BoundaryBox
 from pyphyds.physics.laws.randomness import RandomnessLaw
 from pyphyds.physics.interactions.collision_interaction import CollisionInteraction
-from pyphyds.physics import Simulation
+from pyphyds.physics.simulation import Simulation
 import cv2
 import numpy as np
 
@@ -14,33 +14,40 @@ BOUNDS = np.array((SIZE, SIZE))
 NUM_PARTICLES = 50
 SPEED = 1
 
-particles_a = Particles(NUM_PARTICLES, BOUNDS, SPEED, attributes={"color": (255, 0, 0)})
-particles_b = Particles(NUM_PARTICLES, BOUNDS, SPEED, attributes={"color": (0, 0, 255)})
+particles = Particles(NUM_PARTICLES, BOUNDS, SPEED)
 
-particles_a.v = np.zeros_like(particles_a.v)
-particles_b.v = np.zeros_like(particles_b.v)
+particles.v = np.zeros_like(particles.v)
+
+particle_map = ParticleMap(particles, [1, 2], [0.1, 0.9])
 
 simulation = Simulation(
-    particles=[particles_a, particles_b],
+    particles=particles,
+    particle_map=particle_map,
     laws=[
-        BoundaryBox(BOUNDS, [particles_a, particles_b]),
-        RandomnessLaw([particles_a, particles_b])
+        BoundaryBox(BOUNDS, [particles]),
+        RandomnessLaw([particles])
     ],
     interactions=[
-        CollisionInteraction(particles_a, particles_b)
+        CollisionInteraction(key_a=1, key_b=2, particle_map=particle_map),
     ]
 )
 
-def draw(particles):
+colour_map = {
+    1: (0, 0, 255),
+    2: (255, 0, 0)
+}
+
+def draw(particle_map):
     img = np.zeros((*BOUNDS, 3), dtype=np.uint8)
-    for particle in particles:
-        p = np.clip(particle.x, np.array([0, 0]), BOUNDS - 1)
-        img[p[:, 0], p[:, 1]] = particle.attributes["color"]
+    for cls in particle_map.classes:
+        p_x = particle_map.get_class('x', cls)
+        p_x = np.clip(p_x, np.array([0, 0]), BOUNDS - 1)
+        img[p_x[:, 0], p_x[:, 1]] = colour_map[cls]
     img = cv2.resize(img, (500, 500), interpolation=cv2.INTER_NEAREST)
     return img
 
 while True:
-    img = draw([particles_a, particles_b])
+    img = draw(particle_map=particle_map)
     cv2.imshow("game", img)
     cv2.waitKey(100)
     simulation.step()

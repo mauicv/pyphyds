@@ -1,7 +1,7 @@
-from pyphyds.physics.particles import Particles
+from pyphyds.physics.particles import Particles, ParticleMap
 from pyphyds.physics.laws.boundary_box import BoundaryBox
-from pyphyds.physics.interactions.collision_interaction import SelfCollisionInteraction
-from pyphyds.physics import Simulation
+from pyphyds.physics.interactions.collision_interaction import CollisionInteraction
+from pyphyds.physics.simulation import Simulation
 import cv2
 import numpy as np
 
@@ -13,12 +13,14 @@ BOUNDS = np.array((SIZE, SIZE))
 NUM_PARTICLES = 100
 
 particles = Particles(NUM_PARTICLES, BOUNDS, 2)
-simulation = Simulation(
-    particles=[particles],
-    laws=[BoundaryBox(BOUNDS, [particles])],
-    interactions=[SelfCollisionInteraction(particles)]
-)
+particle_map = ParticleMap(particles, [1], [1])
 
+simulation = Simulation(
+    particles=particles,
+    particle_map=particle_map,
+    laws=[BoundaryBox(BOUNDS, [particles])],
+    interactions=[CollisionInteraction(key_a=1, key_b=1, particle_map=particle_map)]
+)
 
 def draw(particles):
     img = np.zeros(BOUNDS)
