@@ -14,7 +14,7 @@ class Simulation:
         ):
         self.particles = particles
         self.laws = laws
-        self.interaction_rules = interactions
+        self.interactions = interactions
 
     def step(self):
         for p in self.particles:
@@ -22,3 +22,6 @@ class Simulation:
 
         for law in self.laws:
             law()
+
+        for interaction in self.interactions:
+            interaction()

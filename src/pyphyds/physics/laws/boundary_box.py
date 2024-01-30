@@ -4,8 +4,8 @@ from pyphyds.physics.particles import Particles
 
 
 class BoundaryBox(LawBase):
-    def __init__(self, name: str, bounds: tuple, particles: list[Particles]):
-        super().__init__(name)
+    def __init__(self, bounds: tuple, particles: list[Particles]):
+        super().__init__('boundary_box')
         self.bounds = np.array(bounds)
         self.particles = particles
 

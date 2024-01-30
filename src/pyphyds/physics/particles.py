@@ -1,9 +1,17 @@
+from typing import Dict, Optional
 from random import randint
 import numpy as np
 
 
 class Particles:
-    def __init__(self, number, x_bound, v_bound) -> None:
+    def __init__(
+            self,
+            number: int,
+            x_bound: np.ndarray,
+            v_bound: np.ndarray,
+            attributes: Optional[Dict]=None
+        ) -> None:
+        self.attributes = attributes
         self.number = number
         self.x_bound = np.array(x_bound)
         self.x = np.random.randint(np.array([0,0]), self.x_bound, (number, 2))

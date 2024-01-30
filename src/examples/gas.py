@@ -1,5 +1,6 @@
 from pyphyds.physics.particles import Particles
 from pyphyds.physics.laws.boundary_box import BoundaryBox
+from pyphyds.physics.interactions.collision_interaction import SelfCollisionInteraction
 from pyphyds.physics import Simulation
 import cv2
 import numpy as np
@@ -7,13 +8,17 @@ import numpy as np
 
 cv2.namedWindow("game", cv2.WINDOW_NORMAL)
 
-BOUNDS = np.array((64, 64))
+SIZE = 200
+BOUNDS = np.array((SIZE, SIZE))
+NUM_PARTICLES = 100
 
-particles = Particles(100, BOUNDS, 2)
+particles = Particles(NUM_PARTICLES, BOUNDS, 2)
 simulation = Simulation(
     particles=[particles],
-    laws=[BoundaryBox("box", BOUNDS, [particles])]
+    laws=[BoundaryBox(BOUNDS, [particles])],
+    interactions=[SelfCollisionInteraction(particles)]
 )
+
 
 def draw(particles):
     img = np.zeros(BOUNDS)
