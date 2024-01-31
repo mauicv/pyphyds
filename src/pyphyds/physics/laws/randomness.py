@@ -1,13 +1,17 @@
 from typing import List
 import numpy as np
-from pyphyds.discrete_physics.laws.base_law import LawBase
-from pyphyds.discrete_physics.particles import Particles
+from pyphyds.physics.laws.base_law import LawBase
+from pyphyds.physics.particles.discrete_particles import DiscreteParticles
 
 
 class RandomnessLaw(LawBase):
+    """Adds randomness to the particles' velocities.
+
+    This is intended for discrete systems which can be very deterministic.
+    """
     def __init__(
             self,
-            particles: List[Particles],
+            particles: List[DiscreteParticles],
             p: float = 0.01,
             v_bound: np.ndarray=np.array([2, 2])
         ):

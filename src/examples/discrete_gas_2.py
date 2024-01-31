@@ -1,8 +1,9 @@
-from pyphyds.discrete_physics.particles import Particles, ParticleMap
-from pyphyds.discrete_physics.laws.boundary_box import BoundaryBox
-from pyphyds.discrete_physics.laws.randomness import RandomnessLaw
-from pyphyds.discrete_physics.interactions.collision_interaction import CollisionInteraction
-from pyphyds.discrete_physics.simulation import Simulation
+from pyphyds.physics.particles.discrete_particles import DiscreteParticles
+from pyphyds.physics.particles.particle_map import ParticleMap
+from pyphyds.physics.laws.boundary_box import DiscreteBoundaryBox
+from pyphyds.physics.laws.randomness import RandomnessLaw
+from pyphyds.physics.interactions.collision_interaction import DiscreteCollisionInteraction
+from pyphyds.physics.simulation import Simulation
 import cv2
 import numpy as np
 
@@ -14,7 +15,7 @@ BOUNDS = np.array((SIZE, SIZE))
 NUM_PARTICLES = 50
 SPEED = 1
 
-particles = Particles(NUM_PARTICLES, BOUNDS, SPEED)
+particles = DiscreteParticles(NUM_PARTICLES, BOUNDS, SPEED)
 
 particles.v = np.zeros_like(particles.v)
 
@@ -24,11 +25,11 @@ simulation = Simulation(
     particles=particles,
     particle_map=particle_map,
     laws=[
-        BoundaryBox(BOUNDS, [particles]),
+        DiscreteBoundaryBox(BOUNDS, [particles]),
         RandomnessLaw([particles])
     ],
     interactions=[
-        CollisionInteraction(key_a=1, key_b=2, particle_map=particle_map),
+        DiscreteCollisionInteraction(key_a=1, key_b=2, particle_map=particle_map),
     ]
 )
 

@@ -1,31 +1,16 @@
-from typing import Dict, Optional, List, Any
+from typing import List, Any, Dict, Optional, Union
 import numpy as np
-
-
-class Particles:
-    def __init__(
-            self,
-            number: int,
-            x_bound: np.ndarray,
-            v_bound: np.ndarray,
-            attributes: Optional[Dict]=None,
-        ) -> None:
-        self.attributes = attributes
-        self.number = number
-        self.x_bound = np.array(x_bound)
-        self.x = np.random.randint(np.array([0,0]), self.x_bound, (number, 2))
-        self.v = np.random.randint(-v_bound, v_bound + 1, (number, 2))
-
-    def step(self):
-        self.x += self.v
+from pyphyds.physics.particles.particles import Particles
+from pyphyds.physics.particles.discrete_particles import DiscreteParticles
 
 
 class ParticleMap:
     def __init__(
             self,
-            particles: Particles,
+            particles: Union[Particles, DiscreteParticles],
             classes: List[Any],
-            probs: List[float]
+            probs: List[float],
+            properties: Optional[Dict]=None
         ):
         self.particles = particles
         self.classes = classes
@@ -35,12 +20,16 @@ class ParticleMap:
             p=probs,
             replace=True
         )
+        self.properties = properties
 
     def get_class(self, attribute: str, key: int):
         return getattr(self.particles, attribute)[self.particle_index == key]
 
     def set_class(self, attribute: str, key: int, value: Any):
         getattr(self.particles, attribute)[self.particle_index == key] = value
+
+    def get_properties(self, particle_id: int):
+        return self.properties[self.particle_index[particle_id]]
 
     def __getitem__(self, key):
         return self.particle_index[key]

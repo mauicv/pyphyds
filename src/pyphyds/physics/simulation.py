@@ -1,8 +1,10 @@
 import torch
 from typing import List
 
-from pyphyds.discrete_physics.interactions.base_interaction import InteractionRuleBase
-from pyphyds.discrete_physics.particles import Particles, ParticleMap
+from pyphyds.physics.interactions.base_interaction import InteractionRuleBase
+from pyphyds.physics.particles.discrete_particles import DiscreteParticles
+from pyphyds.physics.particles.particles import Particles
+from pyphyds.physics.particles.particle_map import ParticleMap
 
 
 class Simulation:

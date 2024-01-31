@@ -1,5 +1,6 @@
 import torch
-from pyphyds.physics.particles import Particles, ParticleMap
+from pyphyds.physics.particles.particles import Particles
+from pyphyds.physics.particles.particle_map import ParticleMap
 
 
 def test_particles():
