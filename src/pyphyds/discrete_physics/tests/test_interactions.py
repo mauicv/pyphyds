@@ -1,6 +1,6 @@
 import numpy as np
-from pyphyds.physics.particles import Particles, ParticleMap
-from pyphyds.physics.interactions.collision_interaction import CollisionInteraction, CollisionInteraction
+from pyphyds.discrete_physics.particles import Particles, ParticleMap
+from pyphyds.discrete_physics.interactions.collision_interaction import CollisionInteraction, CollisionInteraction
 
 
 def test_particles():

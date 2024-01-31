@@ -1,6 +1,6 @@
 import numpy as np
-from pyphyds.physics.laws.base_law import LawBase
-from pyphyds.physics.particles import Particles
+from pyphyds.discrete_physics.laws.base_law import LawBase
+from pyphyds.discrete_physics.particles import Particles
 
 
 class BoundaryBox(LawBase):

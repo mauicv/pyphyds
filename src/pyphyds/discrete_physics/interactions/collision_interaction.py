@@ -1,4 +1,4 @@
-from pyphyds.physics.interactions.base_interaction import InteractionRuleBase
+from pyphyds.discrete_physics.interactions.base_interaction import InteractionRuleBase
 import numpy as np
 
 

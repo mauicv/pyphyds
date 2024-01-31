@@ -1,5 +1,5 @@
 import numpy as np
-from pyphyds.physics.particles import Particles, ParticleMap
+from pyphyds.discrete_physics.particles import Particles, ParticleMap
 
 def test_particles():
     p = Particles(1, x_bound=np.array([10, 10]), v_bound=np.array([3, 3]))

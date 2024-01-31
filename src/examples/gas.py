@@ -1,7 +1,7 @@
-from pyphyds.physics.particles import Particles, ParticleMap
-from pyphyds.physics.laws.boundary_box import BoundaryBox
-from pyphyds.physics.interactions.collision_interaction import CollisionInteraction
-from pyphyds.physics.simulation import Simulation
+from pyphyds.discrete_physics.particles import Particles, ParticleMap
+from pyphyds.discrete_physics.laws.boundary_box import BoundaryBox
+from pyphyds.discrete_physics.interactions.collision_interaction import CollisionInteraction
+from pyphyds.discrete_physics.simulation import Simulation
 import cv2
 import numpy as np
 
