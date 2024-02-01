@@ -23,6 +23,9 @@ class Simulation:
     def step(self):
         self.particles.step()
         for p_i in range(self.particles.number):
+            if not self.particle_map.get_properties(p_i).get('is_active', True):
+                continue
+
             for p_j in range(p_i, self.particles.number):
                 for interaction in self.interactions:
                     interaction(p_i, p_j)
