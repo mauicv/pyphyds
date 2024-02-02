@@ -9,3 +9,7 @@ PyPhyDS is a Python package for creating datasets derived from physics simulatio
 ```bash
 pip install pyphyds
 ```
+
+## TODO:
+
+- [ ] Need a detection phase and a resolution phase for particle interactions

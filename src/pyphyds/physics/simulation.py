@@ -18,17 +18,33 @@ class Simulation:
         self.particles = particles
         self.particle_map = particle_map
         self.laws = laws
-        self.interactions = interactions
+        self.force_interactions = [interaction for interaction in interactions if interaction.type == 'force']
+        self.state_interactions = [interaction for interaction in interactions if interaction.type == 'state']
 
     def step(self):
+        distance, delta, touching = self._compute_proximities()
+        delta_sim = torch.zeros_like(delta)
+        for interaction in self.force_interactions:
+            delta_sim += interaction(touching, delta, distance)
+
+        state_events = []
+        for interaction in self.state_interactions:
+            state_events.extend(
+                interaction(touching, delta, distance)
+            )
+
+        self.particles.v += delta_sim.sum(-2)
+
+        for event in state_events:
+            event.resolve(self.particle_map)
+
         self.particles.step()
-        for p_i in range(self.particles.number):
-            if not self.particle_map.get_properties(p_i).get('is_active', True):
-                continue
 
-            for p_j in range(p_i, self.particles.number):
-                for interaction in self.interactions:
-                    interaction(p_i, p_j)
-
-        for law in self.laws:
-            law()
+    def _compute_proximities(self):
+        delta = self.particles.x[None, :] - self.particles.x[:, None]
+        distance = (delta**2).sum(-1).sqrt()
+        sizes = self.particle_map.get_prop_vect('size')
+        size_mat = sizes[None, :] + sizes[:, None]
+        D = distance - size_mat + 2.001*torch.eye(self.particles.number)*sizes
+        touching = D < 0
+        return distance, delta, touching

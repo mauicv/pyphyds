@@ -2,7 +2,7 @@ from pyphyds.physics.particles.particles import Particles
 from pyphyds.physics.particles.particle_map import ParticleMap
 from pyphyds.physics.laws.boundary_box import BoundaryBox
 from pyphyds.physics.interactions.collision_interaction import CollisionInteraction, SeparationInteraction
-from pyphyds.physics.interactions.local_interaction import ABtoCDInteraction
+from pyphyds.physics.interactions.local_interaction import ABtoCDInteraction, CDtoABInteraction
 from pyphyds.physics.simulation import Simulation
 import cv2
 import numpy as np
@@ -13,10 +13,10 @@ cv2.namedWindow("game", cv2.WINDOW_NORMAL)
 
 SIZE = 500
 IMG_SIZE = 500
-# IMG_SIZE = 32
+IMG_SIZE = 500
 BOUNDS = torch.tensor([SIZE, SIZE])
 NUM_PARTICLES = 25
-PARTICLE_A_SIZE = 5
+PARTICLE_A_SIZE = 10
 PARTICLE_B_SIZE = 20
 PARTICLE_C_SIZE = 10
 SPEED = 2
@@ -64,6 +64,20 @@ simulation = Simulation(
             key_d=4,
             particle_map=particle_map
         ),
+        # CDtoABInteraction(
+        #     key_a=1,
+        #     key_b=3,
+        #     target_key=2,
+        #     dead_key=4,
+        #     particle_map=particle_map
+        # ),
+        # CDtoABInteraction(
+        #     key_a=2,
+        #     key_b=3,
+        #     target_key=1,
+        #     dead_key=4,
+        #     particle_map=particle_map
+        # ),
         CollisionInteraction(
             keys=[1, 2, 3],
             particle_map=particle_map
@@ -91,4 +105,3 @@ while True:
     cv2.imshow("game", img)
     cv2.waitKey(1)
     simulation.step()
-    print(particle_map.particle_index)
