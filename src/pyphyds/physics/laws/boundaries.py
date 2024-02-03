@@ -6,7 +6,7 @@ from pyphyds.physics.particles.particles import Particles
 from pyphyds.physics.particles.discrete_particles import DiscreteParticles
 
 
-class BoundaryBox(LawBase):
+class TorusBoundary(LawBase):
     def __init__(self, bounds: tuple, particles: list[Particles]):
         super().__init__('boundary_box')
         if not isinstance(bounds, torch.Tensor):
@@ -15,14 +15,11 @@ class BoundaryBox(LawBase):
         self.particles = particles
 
     def __call__(self):
-        for particle in self.particles:
-            x_v = particle.v.clone()
-            for i, (p, v) in enumerate(zip(particle.x, particle.v)):
-                if p[0] < 0 or p[0] > self.bounds[0]:
-                    x_v[i] = reflect(v, torch.tensor([1., 0.]))
-                if p[1] < 0 or p[1] > self.bounds[1]:
-                    x_v[i] = reflect(v, torch.tensor([0., 1.]))
-            particle.v = x_v
+        A = self.particles.x[self.particles.x[:, 0] < 0]
+        self.particles.x[self.particles.x[:, 0] < 0] += torch.tensor([self.bounds[0], 0])[None, :]
+        self.particles.x[self.particles.x[:, 0] > self.bounds[0]] -= torch.tensor([self.bounds[0], 0])[None, :]
+        self.particles.x[self.particles.x[:, 1] < 0] += torch.tensor([0, self.bounds[1]])[None, :]
+        self.particles.x[self.particles.x[:, 1] > self.bounds[0]] -= torch.tensor([0, self.bounds[1]])[None, :]
 
 
 class DiscreteBoundaryBox(LawBase):

@@ -14,13 +14,15 @@ class CollisionInteraction(InteractionRuleBase):
     def __call__(self, touching, delta, distance):
         interaction_mat = self._compute_interaction_mat(self.keys, self.keys)
         perm_mat = interaction_mat * touching
-        n_delta = (
+        touching_bool = touching.sum(-1)
+        stop_v = touching_bool[:, None] * self.particle_map.particles.v
+        delta_v = (
             perm_mat
             .to(torch.double)
-            @ self.particle_map.particles.v[None]
+            @ self.particle_map.particles.v
             .to(torch.double)
         )
-        return n_delta
+        return stop_v - delta_v
 
 
 class SeparationInteraction(InteractionRuleBase):

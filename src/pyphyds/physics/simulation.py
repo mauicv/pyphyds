@@ -23,9 +23,10 @@ class Simulation:
 
     def step(self):
         distance, delta, touching = self._compute_proximities()
-        delta_sim = torch.zeros_like(delta)
+        delta_sim = torch.zeros_like(self.particles.v)
         for interaction in self.force_interactions:
-            delta_sim += interaction(touching, delta, distance)
+            delta_n = interaction(touching, delta, distance)
+            delta_sim += delta_n
 
         state_events = []
         for interaction in self.state_interactions:
@@ -33,12 +34,16 @@ class Simulation:
                 interaction(touching, delta, distance)
             )
 
-        self.particles.v += delta_sim.sum(-2)
+        self.particles.v -= delta_sim
 
         for event in state_events:
             event.resolve(self.particle_map)
 
+        for law in self.laws:
+            law()
+
         self.particles.step()
+        return delta_sim, state_events
 
     def _compute_proximities(self):
         delta = self.particles.x[None, :] - self.particles.x[:, None]

@@ -1,6 +1,6 @@
 from pyphyds.physics.particles.discrete_particles import DiscreteParticles
 from pyphyds.physics.particles.particle_map import ParticleMap
-from pyphyds.physics.laws.boundary_box import DiscreteBoundaryBox
+from pyphyds.physics.laws.boundaries import DiscreteBoundaryBox
 from pyphyds.physics.laws.randomness import RandomnessLaw
 from pyphyds.physics.interactions.collision_interaction import DiscreteCollisionInteraction
 from pyphyds.physics.simulation import Simulation

@@ -23,6 +23,7 @@ class ParticleMap:
             self.particles.number,
             replacement=True
         )
+        self.particle_index += 1
         if 0 in properties:
             raise ValueError('0 is a reserved class index')
 

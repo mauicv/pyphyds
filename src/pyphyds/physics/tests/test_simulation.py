@@ -32,10 +32,10 @@ def test_deltas():
         particle_map=pm
     )
 
-    separation_interaction = SeparationInteraction(
-        keys=[1, 2],
-        particle_map=pm
-    )
+    # separation_interaction = SeparationInteraction(
+    #     keys=[1, 2],
+    #     particle_map=pm
+    # )
 
     state_create_interaction_1 = StateTransitionInteraction(
         source=1,
@@ -70,12 +70,13 @@ def test_deltas():
         particle_map=pm,
         interactions=[
             collision_interaction,
-            separation_interaction,
+            # separation_interaction,
             state_create_interaction_1,
             state_create_interaction_2,
             state_create_interaction_3,
             state_transition_interaction
-        ]
+        ],
+        laws=[]
     )
 
     delta, distance, touching = sim._compute_proximities()

@@ -1,6 +1,6 @@
 from pyphyds.physics.particles.particles import Particles
 from pyphyds.physics.particles.particle_map import ParticleMap
-from pyphyds.physics.laws.boundary_box import BoundaryBox
+from pyphyds.physics.laws.boundaries import BoundaryBox
 from pyphyds.physics.interactions.collision_interaction import CollisionInteraction
 from pyphyds.physics.simulation import Simulation
 import cv2
