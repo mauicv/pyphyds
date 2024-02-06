@@ -1,8 +1,8 @@
 from pyphyds.physics.particles.particles import Particles
 from pyphyds.physics.particles.particle_map import ParticleMap
-from pyphyds.physics.laws.boundaries import BoundaryBox
+from pyphyds.physics.laws.boundaries import TorusBoundary
 from pyphyds.physics.interactions.collision_interaction import CollisionInteraction, SeparationInteraction
-from pyphyds.physics.interactions.local_interaction import ABtoCDInteraction, CDtoABInteraction
+from pyphyds.physics.interactions.local_interaction import StateCreateInteraction, StateTransitionInteraction
 from pyphyds.physics.simulation import Simulation
 import cv2
 import numpy as np
@@ -19,13 +19,12 @@ NUM_PARTICLES = 25
 PARTICLE_A_SIZE = 10
 PARTICLE_B_SIZE = 20
 PARTICLE_C_SIZE = 10
-SPEED = 2
+SPEED = 1
 
 particles = Particles(NUM_PARTICLES, BOUNDS, SPEED)
 particle_map = ParticleMap(
     particles, 
-    [1, 2, 3, 4],
-    [0.5, 0.5, 0, 0],
+    3, [0.5, 0.5, 0],
     properties={
         1: {
             'size': PARTICLE_A_SIZE,
@@ -41,11 +40,6 @@ particle_map = ParticleMap(
             'size': PARTICLE_C_SIZE,
             'color': (0, 255, 0),
             'is_active': 'True'
-        },
-        4: {
-            'size': 0,
-            'color': (0, 0, 0),
-            'is_active': 'False'
         }
     }
 )
@@ -54,28 +48,31 @@ simulation = Simulation(
     particles=particles,
     particle_map=particle_map,
     laws=[
-        BoundaryBox(BOUNDS, [particles])
+        TorusBoundary(BOUNDS, particles)
     ],
     interactions=[
-        ABtoCDInteraction(
-            key_a=1,
-            key_b=2,
-            key_c=3,
-            key_d=4,
+        StateTransitionInteraction(
+            source=1,
+            catalyst=2,
+            target=3,
             particle_map=particle_map
         ),
-        # CDtoABInteraction(
-        #     key_a=1,
-        #     key_b=3,
-        #     target_key=2,
-        #     dead_key=4,
+        StateTransitionInteraction(
+            source=2,
+            catalyst=1,
+            target=0,
+            particle_map=particle_map
+        ),
+        # StateCreateInteraction(
+        #     source=3,
+        #     catalyst=1,
+        #     target=2,
         #     particle_map=particle_map
         # ),
-        # CDtoABInteraction(
-        #     key_a=2,
-        #     key_b=3,
-        #     target_key=1,
-        #     dead_key=4,
+        # StateTransitionInteraction(
+        #     source=3,
+        #     catalyst=1,
+        #     target=1,
         #     particle_map=particle_map
         # ),
         CollisionInteraction(
@@ -95,7 +92,8 @@ def draw(particle_map):
     for ind, x in enumerate(p):
         x = (int(x.numpy()[0]), int(x.numpy()[1]))
         properties = particle_map.get_properties(ind)
-        cv2.circle(img, x, int(properties['size']), properties['color'], -1)
+        if properties['is_active']:
+            cv2.circle(img, x, int(properties['size']), properties['color'], -1)
     img = cv2.resize(img, (IMG_SIZE, IMG_SIZE), interpolation=cv2.INTER_NEAREST)
     img = cv2.resize(img, (500, 500), interpolation=cv2.INTER_NEAREST)
     return img

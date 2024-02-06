@@ -19,14 +19,22 @@ class Simulation:
         self.particle_map = particle_map
         self.laws = laws
         self.force_interactions = [interaction for interaction in interactions if interaction.type == 'force']
+        self.position_interactions = [interaction for interaction in interactions if interaction.type == 'position']
         self.state_interactions = [interaction for interaction in interactions if interaction.type == 'state']
 
     def step(self):
         distance, delta, touching = self._compute_proximities()
-        delta_sim = torch.zeros_like(self.particles.v)
-        for interaction in self.force_interactions:
-            delta_n = interaction(touching, delta, distance)
-            delta_sim += delta_n
+        if len(self.force_interactions) > 0:
+            delta_v_acc = torch.zeros_like(self.particles.v)
+            for interaction in self.force_interactions:
+                delta_v = interaction(touching, delta, distance)
+                delta_v_acc += delta_v
+
+        if len(self.position_interactions) > 0:
+            delta_x_acc = torch.zeros_like(self.particles.x)
+            for interaction in self.position_interactions:
+                delta_x = interaction(touching, delta, distance)
+                delta_x_acc += delta_x
 
         state_events = []
         for interaction in self.state_interactions:
@@ -34,7 +42,11 @@ class Simulation:
                 interaction(touching, delta, distance)
             )
 
-        self.particles.v -= delta_sim
+        if len(self.force_interactions) > 0:
+            self.particles.v -= delta_v_acc
+
+        if len(self.position_interactions) > 0:
+            self.particles.x += delta_x_acc
 
         for event in state_events:
             event.resolve(self.particle_map)
@@ -43,7 +55,7 @@ class Simulation:
             law()
 
         self.particles.step()
-        return delta_sim, state_events
+        return delta_v_acc, state_events
 
     def _compute_proximities(self):
         delta = self.particles.x[None, :] - self.particles.x[:, None]

@@ -1,7 +1,7 @@
 from pyphyds.physics.particles.particles import Particles
 from pyphyds.physics.particles.particle_map import ParticleMap
 from pyphyds.physics.laws.boundaries import TorusBoundary
-from pyphyds.physics.interactions.collision_interaction import CollisionInteraction
+from pyphyds.physics.interactions.collision_interaction import CollisionInteraction, SeparationInteraction
 from pyphyds.physics.simulation import Simulation
 import cv2
 import numpy as np
@@ -28,6 +28,10 @@ simulation = Simulation(
     ],
     interactions=[
         CollisionInteraction(
+            keys=[1],
+            particle_map=particle_map
+        ),
+        SeparationInteraction(
             keys=[1],
             particle_map=particle_map
         )

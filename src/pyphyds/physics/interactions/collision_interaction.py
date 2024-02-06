@@ -26,10 +26,10 @@ class CollisionInteraction(InteractionRuleBase):
 
 
 class SeparationInteraction(InteractionRuleBase):
-    type = 'force'
+    type = 'position'
 
     def __init__(self, keys, particle_map):
-        super().__init__("collision-interaction", particle_map=particle_map)
+        super().__init__("separation-interaction", particle_map=particle_map)
         self.keys = keys
         self.particle_map = particle_map
         self.particles = particle_map.particles
@@ -37,10 +37,11 @@ class SeparationInteraction(InteractionRuleBase):
     def __call__(self, touching, delta, distance):
         interaction_mat = self._compute_interaction_mat(self.keys, self.keys)
         perm_mat = (interaction_mat * touching)
-        n_delta = torch.zeros_like(delta)
-        n_delta[perm_mat] = delta[perm_mat]
-        return n_delta
-        
+        x_delta = torch.zeros_like(delta)
+        # print(distance[perm_mat].shape, delta[perm_mat].shape)
+        x_delta[perm_mat] = delta[perm_mat]
+        #  / distance[perm_mat]
+        return x_delta.sum(0) / 10
 
 
 # class DiscreteCollisionInteraction(InteractionRuleBase):

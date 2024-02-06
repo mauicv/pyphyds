@@ -39,7 +39,7 @@ class ParticleMap:
     #     getattr(self.particles, attribute)[self.particle_index == key] = value
 
     def get_properties(self, particle_id: int):
-        return self.properties[self.particle_index[particle_id]]
+        return self.properties[int(self.particle_index[particle_id])]
 
     def set_properties(self, particle_id: int, properties: Dict):
         self.properties[self.particle_index[particle_id]] = {
