@@ -14,7 +14,7 @@ class CollisionInteraction(InteractionRuleBase):
     def __call__(self, touching, delta, distance):
         interaction_mat = self._compute_interaction_mat(self.keys, self.keys)
         perm_mat = interaction_mat * touching
-        touching_bool = touching.sum(-1)
+        touching_bool = perm_mat.sum(-1)
         stop_v = touching_bool[:, None] * self.particle_map.particles.v
         delta_v = (
             perm_mat

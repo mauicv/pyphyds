@@ -19,5 +19,5 @@ class Particles:
         self.x = torch.rand((number, 2)) * self.x_bound
         self.v = torch.randn((number, 2)) * v_bound
 
-    def step(self):
-        self.x += self.v
+    def step(self, inds):
+        self.x[inds] += self.v[inds]

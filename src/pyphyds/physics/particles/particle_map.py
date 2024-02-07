@@ -59,5 +59,8 @@ class ParticleMap:
     def get_inactive_particle(self):
         return torch.where(self.particle_index == 0)[0]
 
+    def get_active_particle_indices(self):
+        return torch.where(self.particle_index > 0)
+
     def get_class_instances(self, key: int):
         return torch.where(self.particle_index == key)

@@ -16,9 +16,9 @@ IMG_SIZE = 500
 IMG_SIZE = 500
 BOUNDS = torch.tensor([SIZE, SIZE])
 NUM_PARTICLES = 25
-PARTICLE_A_SIZE = 10
-PARTICLE_B_SIZE = 20
-PARTICLE_C_SIZE = 10
+PARTICLE_A_SIZE = 5
+PARTICLE_B_SIZE = 5
+PARTICLE_C_SIZE = 5
 SPEED = 1
 
 particles = Particles(NUM_PARTICLES, BOUNDS, SPEED)
@@ -92,8 +92,10 @@ def draw(particle_map):
     for ind, x in enumerate(p):
         x = (int(x.numpy()[0]), int(x.numpy()[1]))
         properties = particle_map.get_properties(ind)
+        color = (255, 255, 255)
         if properties['is_active']:
-            cv2.circle(img, x, int(properties['size']), properties['color'], -1)
+            color = properties['color']
+        cv2.circle(img, x, int(properties['size']), color, -1)
     img = cv2.resize(img, (IMG_SIZE, IMG_SIZE), interpolation=cv2.INTER_NEAREST)
     img = cv2.resize(img, (500, 500), interpolation=cv2.INTER_NEAREST)
     return img
