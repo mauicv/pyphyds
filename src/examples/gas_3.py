@@ -12,13 +12,13 @@ import torch
 cv2.namedWindow("game", cv2.WINDOW_NORMAL)
 
 SIZE = 500
-# IMG_SIZE = 32
-IMG_SIZE = 500
+IMG_SIZE = 32
+# IMG_SIZE = 500
 BOUNDS = torch.tensor([SIZE, SIZE])
-NUM_PARTICLES = 500
-PARTICLE_A_SIZE = 3
-PARTICLE_B_SIZE = 3
-PARTICLE_C_SIZE = 3
+NUM_PARTICLES = 30
+PARTICLE_A_SIZE = 20
+PARTICLE_B_SIZE = 20
+PARTICLE_C_SIZE = 20
 SPEED = 1
 
 particles = Particles(NUM_PARTICLES, BOUNDS, SPEED)
@@ -66,7 +66,7 @@ simulation = Simulation(
         SpontaneousTransitionInteraction(
             source=3,
             targets=[2, 1],
-            event_probability=0.5,
+            event_probability=0.01,
             particle_map=particle_map
         ),
 
