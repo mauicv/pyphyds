@@ -24,6 +24,31 @@ class Simulation:
 
     def step(self):
         distance, delta, touching = self._compute_proximities()
+        state_events = []
+        for interaction in self.state_interactions:
+            state_events.extend(
+                interaction(touching, delta, distance)
+            )
+
+        for event in state_events:
+            event.resolve(self.particle_map)
+            """
+            # EVENT LOG:
+            # TransitionEvent(source=1, target_class=3)
+            # TransitionEvent(source=4, target_class=0)
+            #
+            # TransitionEvent(source=1, target_class=2)
+            # CreateEvent(source=1, location=tensor([132.7887, 244.3631]), target_class=1)
+            #
+            # TransitionEvent(source=4, target_class=3)
+            # TransitionEvent(source=1, target_class=0)
+            #
+            # The First two sets of two are correct the last on is also correct
+            # but occurs straight after the second set of two. This is because
+            # the particle materializes and then reacts straight away. This is
+            # not the desired behavior.
+            # """
+
         delta_v_acc = torch.zeros_like(self.particles.v)
         if len(self.force_interactions) > 0:
             for interaction in self.force_interactions:
@@ -36,20 +61,11 @@ class Simulation:
                 delta_x = interaction(touching, delta, distance)
                 delta_x_acc += delta_x
 
-        state_events = []
-        for interaction in self.state_interactions:
-            state_events.extend(
-                interaction(touching, delta, distance)
-            )
-
         if len(self.force_interactions) > 0:
             self.particles.v -= delta_v_acc
 
         if len(self.position_interactions) > 0:
             self.particles.x += delta_x_acc
-
-        for event in state_events:
-            event.resolve(self.particle_map)
 
         for law in self.laws:
             law()

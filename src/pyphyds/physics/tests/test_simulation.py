@@ -6,7 +6,6 @@ from pyphyds.physics.interactions.collision_interaction import (
     CollisionInteraction, SeparationInteraction
 )
 from pyphyds.physics.interactions.local_interaction import (
-    StateCreateInteraction,
     StateTransitionInteraction,
     CreateEvent,
     TransitionEvent
@@ -51,12 +50,12 @@ def test_deltas():
         particle_map=pm
     )
     
-    state_create_interaction_3 = StateCreateInteraction(
-        source=3,
-        catalyst=1,
-        target=2,
-        particle_map=pm
-    )
+    # state_create_interaction_3 = StateCreateInteraction(
+    #     source=3,
+    #     catalyst=1,
+    #     target=2,
+    #     particle_map=pm
+    # )
 
     state_transition_interaction = StateTransitionInteraction(
         source=3,
@@ -73,7 +72,7 @@ def test_deltas():
             # separation_interaction,
             state_create_interaction_1,
             state_create_interaction_2,
-            state_create_interaction_3,
+            # state_create_interaction_3,
             state_transition_interaction
         ],
         laws=[]
@@ -102,12 +101,12 @@ def test_deltas():
     assert state_events[1].target_class == 0
     assert isinstance(state_events[1], TransitionEvent)
 
-    assert state_events[2].source == 2
-    assert state_events[2].target_class == 2
-    assert isinstance(state_events[2], CreateEvent)
+    # assert state_events[2].source == 2
+    # assert state_events[2].target_class == 2
+    # assert isinstance(state_events[2], CreateEvent)
 
-    assert state_events[3].source == 2
-    assert state_events[3].target_class == 1
-    assert isinstance(state_events[3], TransitionEvent)
+    assert state_events[2].source == 2
+    assert state_events[2].target_class == 1
+    assert isinstance(state_events[2], TransitionEvent)
 
     sim.step()

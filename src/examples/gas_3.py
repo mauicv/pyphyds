@@ -2,7 +2,7 @@ from pyphyds.physics.particles.particles import Particles
 from pyphyds.physics.particles.particle_map import ParticleMap
 from pyphyds.physics.laws.boundaries import TorusBoundary
 from pyphyds.physics.interactions.collision_interaction import CollisionInteraction, SeparationInteraction
-from pyphyds.physics.interactions.local_interaction import StateCreateInteraction, StateTransitionInteraction
+from pyphyds.physics.interactions.local_interaction import StateTransitionInteraction, SpontaneousTransitionInteraction
 from pyphyds.physics.simulation import Simulation
 import cv2
 import numpy as np
@@ -12,19 +12,19 @@ import torch
 cv2.namedWindow("game", cv2.WINDOW_NORMAL)
 
 SIZE = 500
-IMG_SIZE = 500
+# IMG_SIZE = 32
 IMG_SIZE = 500
 BOUNDS = torch.tensor([SIZE, SIZE])
-NUM_PARTICLES = 25
-PARTICLE_A_SIZE = 5
-PARTICLE_B_SIZE = 5
-PARTICLE_C_SIZE = 5
+NUM_PARTICLES = 500
+PARTICLE_A_SIZE = 3
+PARTICLE_B_SIZE = 3
+PARTICLE_C_SIZE = 3
 SPEED = 1
 
 particles = Particles(NUM_PARTICLES, BOUNDS, SPEED)
 particle_map = ParticleMap(
     particles, 
-    3, [0.5, 0.5, 0],
+    3, [0.0, 0.0, 1],
     properties={
         1: {
             'size': PARTICLE_A_SIZE,
@@ -63,24 +63,19 @@ simulation = Simulation(
             target=0,
             particle_map=particle_map
         ),
-        # StateCreateInteraction(
-        #     source=3,
-        #     catalyst=1,
-        #     target=2,
-        #     particle_map=particle_map
-        # ),
-        # StateTransitionInteraction(
-        #     source=3,
-        #     catalyst=1,
-        #     target=1,
-        #     particle_map=particle_map
-        # ),
+        SpontaneousTransitionInteraction(
+            source=3,
+            targets=[2, 1],
+            event_probability=0.5,
+            particle_map=particle_map
+        ),
+
         CollisionInteraction(
-            keys=[1, 2, 3],
+            keys=[1, 2, 3, 4],
             particle_map=particle_map
         ),
         SeparationInteraction(
-            keys=[1, 2, 3],
+            keys=[1, 2, 3, 4],
             particle_map=particle_map
         ),
     ]

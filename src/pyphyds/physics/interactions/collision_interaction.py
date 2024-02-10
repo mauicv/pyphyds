@@ -38,9 +38,7 @@ class SeparationInteraction(InteractionRuleBase):
         interaction_mat = self._compute_interaction_mat(self.keys, self.keys)
         perm_mat = (interaction_mat * touching)
         x_delta = torch.zeros_like(delta)
-        # print(distance[perm_mat].shape, delta[perm_mat].shape)
         x_delta[perm_mat] = delta[perm_mat]
-        #  / distance[perm_mat]
         return x_delta.sum(0) / 10
 
 

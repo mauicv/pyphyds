@@ -32,11 +32,11 @@ class ParticleMap:
             0: {'is_active': False, 'size': 0}
         }
 
-    # def get_class(self, attribute: str, key: int):
-    #     return getattr(self.particles, attribute)[self.particle_index == key]
-
-    # def set_class(self, attribute: str, key: int, value: Any):
-    #     getattr(self.particles, attribute)[self.particle_index == key] = value
+        self.particle_counts = {
+            i: 0 for i in range(self.classes)
+        }
+        for i in self.particle_index:
+            self.particle_counts[i.item()] += 1
 
     def get_properties(self, particle_id: int):
         return self.properties[int(self.particle_index[particle_id])]
@@ -54,13 +54,20 @@ class ParticleMap:
         return self.particle_index[key]
 
     def __setitem__(self, key, value):
+        self.particle_counts[self.particle_index[key].item()] -= 1
+        self.particle_counts[value] += 1
         self.particle_index[key] = value
 
-    def get_inactive_particle(self):
+    def get_inactive_particles(self):
         return torch.where(self.particle_index == 0)[0]
+
+    def get_inactive_particle(self):
+        a = torch.where(self.particle_index == 0)[0]
+        if a.any():
+            return a[0]
 
     def get_active_particle_indices(self):
         return torch.where(self.particle_index > 0)
 
     def get_class_instances(self, key: int):
-        return torch.where(self.particle_index == key)
+        return torch.where(self.particle_index == key)[0]
