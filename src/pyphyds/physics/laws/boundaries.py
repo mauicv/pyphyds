@@ -22,6 +22,36 @@ class TorusBoundary(LawBase):
         self.particles.x[self.particles.x[:, 1] > self.bounds[0]] -= torch.tensor([0, self.bounds[1]])[None, :]
 
 
+class BoxBoundary(LawBase):
+    def __init__(self, bounds: tuple, particles: list[Particles]):
+        super().__init__('boundary_box')
+        if not isinstance(bounds, torch.Tensor):
+            bounds = torch.tensor(bounds)
+        self.bounds = bounds
+        self.particles = particles
+
+    def __call__(self):
+        a = torch.where(self.particles.x[:, 0] < 0)[0]
+        if a.any():
+            self.particles.x[a, 0] = 0
+            self.particles.v[a, 0] = -self.particles.v[a, 0]
+
+        a = torch.where(self.particles.x[:, 0] > self.bounds[0])[0]
+        if a.any():
+            self.particles.x[a, 0] = self.bounds[0].to(self.particles.x.dtype)
+            self.particles.v[a, 0] = -self.particles.v[a, 0]
+
+        a = torch.where(self.particles.x[:, 1] < 0)[0]
+        if a.any():
+            self.particles.x[a, 1] = 0
+            self.particles.v[a, 1] = -self.particles.v[a, 1]
+
+        a = torch.where(self.particles.x[:, 1] > self.bounds[1])[0]
+        if a.any():
+            self.particles.x[a, 1] = self.bounds[1].to(self.particles.x.dtype)
+            self.particles.v[a, 1] = -self.particles.v[a, 1]
+
+
 class DiscreteBoundaryBox(LawBase):
     def __init__(self, bounds: tuple, particles: list[DiscreteParticles]):
         super().__init__('boundary_box')

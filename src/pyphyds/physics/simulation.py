@@ -62,10 +62,13 @@ class Simulation:
                 delta_x_acc += delta_x
 
         if len(self.force_interactions) > 0:
-            self.particles.v -= delta_v_acc
+            self.particles.x -= delta_v_acc
 
-        if len(self.position_interactions) > 0:
-            self.particles.x += delta_x_acc
+        # if len(self.force_interactions) > 0:
+        #     self.particles.v -= delta_v_acc
+
+        # if len(self.position_interactions) > 0:
+        #     self.particles.x += delta_x_acc
 
         for law in self.laws:
             law()

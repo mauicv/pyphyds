@@ -1,9 +1,19 @@
 import torch
+import numpy as np
 
 def reflect(v, n):
     """Reflects a vector v over a normal n."""
     return v - 2 * (v @ n) * n
 
+
+def rotate(v):
+    """Rotates a tensor of vectors v by an angle."""
+    phi = torch.tensor(5 * np.pi / 180)
+    s = torch.sin(phi)
+    c = torch.cos(phi)
+    rot = torch.stack([torch.stack([c, -s]),
+                    torch.stack([s, c])])
+    return v @ rot
 
 def distance(x, y):
     """Returns the distance between two points."""
